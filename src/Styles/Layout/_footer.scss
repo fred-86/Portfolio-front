@@ -1,4 +1,7 @@
 .footer-wrapper {
+    position: fixed;
+    width: 100%;
+    bottom: 0;
     display: flex;
     flex-direction: row;
     padding: 10px;
@@ -15,5 +18,24 @@
 
     .footer-copyright > p {
         font-size: 1.2rem;
+    }
+    .logo--footer:hover {
+        transform-origin: center;
+        -webkit-animation: spin 4s linear infinite;
+        -moz-animation: spin 4s linear infinite;
+        animation: spin 4s linear infinite;
+    }
+}
+
+@keyframes spin {
+    100% {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .footer-wrapper {
+        position: fixed;
     }
 }

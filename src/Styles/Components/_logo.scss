@@ -2,17 +2,12 @@
     width: 90px;
     height: 90px;
     border-radius: 50px;
-    &--footer:hover {
-        transform-origin: center;
-        -webkit-animation: spin 4s linear infinite;
-        -moz-animation: spin 4s linear infinite;
-        animation: spin 4s linear infinite;
-    }
 }
 
-@keyframes spin {
-    100% {
-        -webkit-transform: rotate(360deg);
-        transform: rotate(360deg);
+@media screen and (max-width: 767px) {
+    .logo {
+        width: 9vw;
+        height: auto;
+        border-radius: 50px;
     }
 }
