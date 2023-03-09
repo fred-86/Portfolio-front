@@ -1,3 +1,11 @@
 @import '../Styles/Base/reset';
-// @import '@/styles/Utils/variables';
+@import '../Styles/Utils/variables';
 @import '../Styles/Base/base';
+
+@import './Components/logo';
+
+@import './Layout/layout';
+@import './Layout/header';
+@import './Layout/footer';
+
+@import './Pages/home';

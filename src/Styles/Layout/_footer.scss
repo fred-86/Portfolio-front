@@ -1,0 +1,19 @@
+.footer-wrapper {
+    display: flex;
+    flex-direction: row;
+    padding: 10px;
+    background: $color-primary;
+
+    .footer-copyright,
+    .footer-logo,
+    .footer-link {
+        width: 33%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .footer-copyright > p {
+        font-size: 1.2rem;
+    }
+}

@@ -1,0 +1,27 @@
+.header-wrapper {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    padding: 10px;
+    background: $color-primary;
+    .header-logo,
+    .header-title {
+        padding: 5px;
+    }
+    .header-logo {
+        width: 30%;
+        display: flex;
+        justify-content: center;
+    }
+
+    .header-title {
+        display: flex;
+        align-items: center;
+        width: 70%;
+        .title {
+            padding-left: 50px;
+            font-family: $font-title;
+            font-size: 3rem;
+        }
+    }
+}
