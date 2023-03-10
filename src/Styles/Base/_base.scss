@@ -9,6 +9,8 @@ body {
     font-size: 12px;
     background: $color-fourth;
     // overflow-x: hidden;
+    position: static;
+    box-sizing: border-box;
 }
 
 a {

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 /**
  *
  * @returns
@@ -14,24 +14,48 @@ export function NavBar() {
         <nav className={`navbar-wrapper ${showLinks ? 'show-nav' : ' '}`}>
             <ul className="navbar_links">
                 <li className="navbar_item">
-                    <Link className="navbar_link" to="/">
+                    <NavLink
+                        to="/profil"
+                        className={({ isActive }) =>
+                            isActive ? '  active ' : 'navbar_link'
+                        }
+                        end
+                    >
                         Mon Profil
-                    </Link>
+                    </NavLink>
                 </li>
                 <li className="navbar_item">
-                    <Link className="navbar_link" to="/">
-                        Mes compétences
-                    </Link>
+                    <NavLink
+                        to="/"
+                        className={({ isActive }) =>
+                            isActive ? 'active ' : 'navbar_link'
+                        }
+                        end
+                    >
+                        Mes Compétences
+                    </NavLink>
                 </li>
                 <li className="navbar_item">
-                    <Link className="navbar_link" to="/">
-                        Mes projets
-                    </Link>
+                    <NavLink
+                        to="/"
+                        className={({ isActive }) =>
+                            isActive ? 'active ' : 'navbar_link'
+                        }
+                        end
+                    >
+                        Mes Projets
+                    </NavLink>
                 </li>
                 <li className="navbar_item">
-                    <Link className="navbar_link" to="/">
+                    <NavLink
+                        to="/"
+                        className={({ isActive }) =>
+                            isActive ? 'active ' : 'navbar_link'
+                        }
+                        end
+                    >
                         Secret
-                    </Link>
+                    </NavLink>
                 </li>
             </ul>
             <button className="navbar_burger" onClick={handleShowLinks}>
