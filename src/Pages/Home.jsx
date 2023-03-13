@@ -1,20 +1,11 @@
 import React from 'react'
 import { Banner } from '../Components/Banner'
-import {
-    getFakeUsers,
-    getFakePerson,
-    getFakeSkills,
-    createSkills,
-} from '../__fakers__/fakers'
-// import { getFirestore } from 'firebase/firestore'
-// import { Database } from '../__services__/DataBase'
+// Only for fake Data
+// import { addData } from '../__fakers__/addData'
 
 export function Home() {
-    getFakeUsers()
-    getFakePerson()
-    getFakeSkills()
-    // const db = getFirestore(Database)
-    // createSkills(db)
+    // Only for fake Data
+    // addData()
     return (
         <main className="home-wrapper">
             <Banner title="Hello !!!" />

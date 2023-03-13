@@ -86,7 +86,7 @@ export function getFakeCareer() {
             '2010-01-24T00:00:00.000Z',
             '2022-01-24T00:00:00.000Z'
         )
-        const randomEndDate = faker.date.betweens(
+        const randomEndDate = faker.date.between(
             randomStartDate,
             '2022-01-01T00:00:00.000Z'
         )
@@ -96,8 +96,8 @@ export function getFakeCareer() {
         data.push({
             name: randomName,
             type: randomType,
-            startDate: randomStartDate,
-            endDate: randomEndDate,
+            startDate: randomStartDate.toLocaleDateString('fr'),
+            endDate: randomEndDate.toLocaleDateString('fr'),
             description: randomDescription,
             createdAT: randomCreatedAt.toLocaleDateString('fr'),
             updatedAt: randomUpdatedAt.toLocaleDateString('fr'),
@@ -118,7 +118,7 @@ export function getFakeDegree() {
             '2010-01-24T00:00:00.000Z',
             '2022-01-24T00:00:00.000Z'
         )
-        const randomEndDate = faker.date.betweens(
+        const randomEndDate = faker.date.between(
             randomStartDate,
             '2022-01-01T00:00:00.000Z'
         )
@@ -128,8 +128,8 @@ export function getFakeDegree() {
         data.push({
             name: randomName,
             school: randomSchool,
-            startDate: randomStartDate,
-            endDate: randomEndDate,
+            startDate: randomStartDate.toLocaleDateString('fr'),
+            endDate: randomEndDate.toLocaleDateString('fr'),
             description: randomDescription,
             createdAT: randomCreatedAt.toLocaleDateString('fr'),
             updatedAt: randomUpdatedAt.toLocaleDateString('fr'),
@@ -192,14 +192,26 @@ export function getFakeSkills() {
     console.log('fakerSkills', data)
     return data
 }
-const db = getFirestore(Database)
-export async function createSkills(db) {
-    const skillsCollection = collection(db, 'Skills')
-    const data = getFakeSkills()
-    let skillsRef = {}
+// const db = getFirestore(Database)
+// export async function createSkills(db) {
+//     const skillsCollection = collection(db, 'skills')
+//     const data = getFakeSkills()
+//     let skillsRef = {}
+//     for (let i = 0; i < data.length; i++) {
+//         skillsRef = await addDoc(skillsCollection, data[i])
+//     }
+
+//     return skillsRef
+// }
+
+// generic add Data
+export async function createData(db, nameCollection, fakeData) {
+    const Collection = collection(db, nameCollection)
+    const data = fakeData
+    let Ref = {}
     for (let i = 0; i < data.length; i++) {
-        skillsRef = await addDoc(skillsCollection, data[i])
+        Ref = await addDoc(Collection, data[i])
     }
 
-    return skillsRef
+    return Ref
 }
