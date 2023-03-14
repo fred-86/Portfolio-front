@@ -15,33 +15,36 @@ export function NavBar() {
             <ul className="navbar_links">
                 <li className="navbar_item">
                     <NavLink
-                        to="/profil"
+                        to="/Profil"
                         className={({ isActive }) =>
                             isActive ? '  active ' : 'navbar_link'
                         }
                         end
+                        onClick={handleShowLinks}
                     >
                         Mon Profil
                     </NavLink>
                 </li>
                 <li className="navbar_item">
                     <NavLink
-                        to="/"
+                        to="/Skills"
                         className={({ isActive }) =>
                             isActive ? 'active ' : 'navbar_link'
                         }
                         end
+                        onClick={handleShowLinks}
                     >
                         Mes Compétences
                     </NavLink>
                 </li>
                 <li className="navbar_item">
                     <NavLink
-                        to="/"
+                        to="/Projects"
                         className={({ isActive }) =>
                             isActive ? 'active ' : 'navbar_link'
                         }
                         end
+                        onClick={handleShowLinks}
                     >
                         Mes Projets
                     </NavLink>
@@ -53,6 +56,7 @@ export function NavBar() {
                             isActive ? 'active ' : 'navbar_link'
                         }
                         end
+                        onClick={handleShowLinks}
                     >
                         Secret
                     </NavLink>
@@ -64,5 +68,3 @@ export function NavBar() {
         </nav>
     )
 }
-
-export default NavBar

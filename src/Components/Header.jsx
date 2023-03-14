@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { Logo } from './Logo'
-import NavBar from './NavBar'
+import { NavBar } from './NavBar'
 /**
  * Header to the app
  * @returns  {React.ReactElement}

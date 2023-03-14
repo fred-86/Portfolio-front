@@ -6,8 +6,12 @@ import { CardProject } from './CardProject'
 
 import 'swiper/css'
 import 'swiper/css/effect-cards'
+import 'swiper/css/effect-creative'
 import 'swiper/css/effect-cube'
 import 'swiper/css/pagination'
+import 'swiper/css/navigation'
+import { CardProfil } from './CardProfil'
+import { CardSkills } from './CardSkills'
 
 export function Slider() {
     return (
@@ -27,13 +31,13 @@ export function Slider() {
                 className="mySwiper"
             >
                 <SwiperSlide>
-                    <CardProject />
+                    <CardProfil />
                 </SwiperSlide>
                 <SwiperSlide>
                     <CardProject />
                 </SwiperSlide>
                 <SwiperSlide>
-                    <CardProject />
+                    <CardSkills />
                 </SwiperSlide>
             </Swiper>
         </>

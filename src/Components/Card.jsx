@@ -6,11 +6,15 @@ import PropTypes from 'prop-types'
  * @param {string} title - titleto the card
  * @returns  {React.ReactElement}
  */
-export function Card({ img, title }) {
+export function Card({ img, title, customclass }) {
     return (
         <div className="card-container card">
             <div className="card-img">
-                <img className="img" src={img} alt={img + ' ' + title} />
+                <img
+                    className={`img  ${customclass}`}
+                    src={img}
+                    alt={img + ' ' + title}
+                />
             </div>
             <div className="card-title">
                 <h2 className="title">{title}</h2>
@@ -22,4 +26,5 @@ export function Card({ img, title }) {
 Card.propTypes = {
     img: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
+    customclass: PropTypes.string,
 }

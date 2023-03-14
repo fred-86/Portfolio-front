@@ -13,3 +13,9 @@
         margin-top: 20px;
     }
 }
+
+@media all and (max-width: 375px) {
+    .home-wrapper {
+        margin-top: 75px;
+    }
+}

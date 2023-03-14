@@ -3,13 +3,13 @@ import { Link } from 'react-router-dom'
 import { data } from '../Data/data'
 import { Card } from './Card'
 /**
- * Card for resume projects
+ *  Card for resume  skills
  * @returns  {React.ReactElement}
  */
-export function CardProject() {
+export function CardSkills() {
     return (
-        <Link to="/Projects">
-            <Card title={data[1].title} img={data[1].picture} />
+        <Link to="/Skills">
+            <Card title={data[2].title} img={data[2].picture} />
         </Link>
     )
 }

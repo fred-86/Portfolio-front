@@ -6,9 +6,19 @@
     top: 50%;
     margin-left: -200px;
     margin-top: -200px;
+    z-index: 1;
 }
 
 .swiper-slide {
     background-position: center;
     background-size: cover;
+}
+
+@media all and (max-width: 375px) {
+    .swiper {
+        width: 200px;
+        height: 200px;
+        top: 65%;
+        margin-left: -100px;
+    }
 }
