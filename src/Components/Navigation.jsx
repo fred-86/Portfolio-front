@@ -1,5 +1,6 @@
 import React from 'react'
 import { Route, Routes } from 'react-router-dom'
+import { Error404 } from '../Pages/Error404'
 import { Home } from '../Pages/Home'
 import { Profil } from '../Pages/Profil'
 import { Projects } from '../Pages/Projects'
@@ -16,6 +17,7 @@ function Navigation() {
                 <Route path="/Projects" element={<Projects />} />
                 <Route path="/Skills" element={<Skills />} />
             </Route>
+            <Route path="/*" element={<Error404 />} />
         </Routes>
     )
 }
