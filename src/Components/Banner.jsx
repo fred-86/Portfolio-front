@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 
 export function Banner({ title }) {
     return (
-        <div className="banner-wrapper">
+        <div data-testid="banner-testId" className="banner-wrapper">
             <h1 className="banner-title">{title}</h1>
         </div>
     )

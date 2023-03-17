@@ -1,0 +1,60 @@
+.error404-wrapper {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+
+    .error404-title {
+        width: 100%;
+        padding: 10px;
+        .title {
+            width: 30%;
+            margin: 0 auto;
+            font-size: 3rem;
+            font-weight: 700;
+            text-align: center;
+        }
+    }
+
+    .error404-message {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        margin-top: 15px;
+    }
+    .message {
+        &-img {
+            width: 50%;
+            height: auto;
+        }
+        &-link {
+            width: 50%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            .link {
+            }
+        }
+        &-link > h2 {
+            width: 40%;
+            margin: 10px auto;
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+        &-link {
+            .link-list {
+                padding: 15px;
+                width: 40%;
+                margin: 0 auto;
+                font-size: 2.2rem;
+            }
+
+            .link-item {
+                font-size: 1.5rem;
+                margin-left: 10px;
+                padding: 5px;
+            }
+        }
+    }
+}

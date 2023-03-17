@@ -1,11 +1,14 @@
 {
     "env": {
+        "node": true,
         "browser": true,
-        "es2021": true
+        "es2021": true,
+        "jest/globals": true
     },
     "extends": [
         "eslint:recommended",
         "plugin:react/recommended",
+        "plugin:jest/recommended",
         "plugin:@typescript-eslint/recommended"
     ],
     "parser": "@typescript-eslint/parser",
@@ -16,7 +19,7 @@
         "ecmaVersion": "latest",
         "sourceType": "module"
     },
-    "plugins": ["react", "@typescript-eslint", "prettier"],
+    "plugins": ["react", "@typescript-eslint", "prettier", "jest", "import"],
     "rules": {
         "prettier/prettier": [
             "error",
@@ -40,5 +43,14 @@
                 "caughtErrorsIgnorePattern": "^_"
             }
         ]
+        // "no-underscore-dangle": 0
+        // "import/extensions": [
+        //     "error",
+        //     "ignorePackages",
+        //     {
+        //         "js": "always",
+        //         "jsx": "always"
+        //     }
+        // ]
     }
 }

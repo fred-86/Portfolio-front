@@ -16,7 +16,7 @@ export function Header() {
                     </Link>
                 </div>
                 <div className="header-title">
-                    <h1 className="title">Développeur Web Junior</h1>
+                    <h1 className="title">Développeur Web </h1>
                 </div>
             </section>
             <section className="header-wrapper__nav">

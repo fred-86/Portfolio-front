@@ -6,7 +6,7 @@ import { Logo } from './Logo'
  */
 export function Footer() {
     return (
-        <footer className="footer-wrapper">
+        <footer className="footer-wrapper" data-testid="footer-wrapper">
             <section className="footer-copyright">
                 <p>Copyright © 2023</p>
             </section>

@@ -5,8 +5,6 @@ import { EffectCube, Pagination } from 'swiper'
 import { CardProject } from './CardProject'
 
 import 'swiper/css'
-import 'swiper/css/effect-cards'
-import 'swiper/css/effect-creative'
 import 'swiper/css/effect-cube'
 import 'swiper/css/pagination'
 import 'swiper/css/navigation'
