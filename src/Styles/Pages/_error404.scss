@@ -1,5 +1,5 @@
 .error404-wrapper {
-    min-height: 100vh;
+    min-height: 90vh;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -14,6 +14,7 @@
             font-size: 3rem;
             font-weight: 700;
             text-align: center;
+            line-height: 1.5;
         }
     }
 
@@ -33,8 +34,11 @@
             display: flex;
             flex-direction: column;
             justify-content: center;
-            .link {
-            }
+        }
+        &-link > p {
+            width: 40%;
+            margin: 0 auto;
+            font-size: 1.5rem;
         }
         &-link > h2 {
             width: 40%;
@@ -54,6 +58,98 @@
                 font-size: 1.5rem;
                 margin-left: 10px;
                 padding: 5px;
+                text-align: center;
+            }
+            .link-list .link-item:nth-child(even) {
+                text-align: center;
+            }
+        }
+    }
+}
+
+.rain {
+    width: 5px;
+    height: 8px;
+    background-color: rgba(13, 176, 240, random(90) * 0.01);
+    -webkit-border-radius: 2px / 4px;
+    -moz-border-radius: 2px / 4px;
+    border-radius: 2px / 4px;
+    opacity: random(90) * 0.01;
+    position: fixed;
+    top: -50px;
+    animation: raining 1s linear;
+    -webkit-animation: raining 1s linear;
+    -moz-animation: raining 1s linear;
+    @debug $rand;
+}
+
+@keyframes raining {
+    0% {
+        top: 0;
+    }
+    25% {
+        top: 25%;
+    }
+    50% {
+        top: 50%;
+    }
+    75% {
+        top: 75%;
+    }
+    100% {
+        top: 100%;
+    }
+}
+
+.btn-rain {
+    background: none;
+    border-radius: 50% 20% / 10% 40%;
+    cursor: pointer;
+}
+
+@media screen and (max-width: 375px) {
+    .error404-wrapper {
+        padding: 20px;
+        .error404-title {
+            .title {
+                width: 80%;
+
+                font-size: 2rem;
+            }
+        }
+
+        .error404-message {
+            flex-direction: column;
+        }
+        .message {
+            &-img {
+                width: 100%;
+                height: auto;
+            }
+            &-link {
+                width: 100%;
+            }
+            &-link > p {
+                width: 90%;
+                text-align: center;
+                margin: 0 auto;
+                font-size: 1rem;
+            }
+            &-link > h2 {
+                width: 90%;
+                font-size: 1.5rem;
+            }
+            &-link {
+                .link-list {
+                    padding: 15px;
+                    width: 80%;
+                    margin: 0 auto;
+                    font-size: 1.5rem;
+                }
+
+                .link-item {
+                    font-size: 1rem;
+                }
             }
         }
     }
