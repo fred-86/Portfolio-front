@@ -1,22 +1,21 @@
 import { useState, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { setIdInterval, clearIdInterval } from '../__features__/counter.slice'
 
 export function Rainfall() {
     const [isRaining, setIsRaining] = useState(false)
     const [count, setCount] = useState(0)
-    const [idInterval, setIdInterval] = useState(0)
+    // const [idInterval, setIdInterval] = useState(0)
+
+    // const idInterval = useSelector((state) => state.interval.idInterval)
+    const dispatch = useDispatch()
 
     function rainfall() {
         const divElement = document.createElement('div')
         divElement.classList.add('rain')
         divElement.setAttribute('id', 'rain')
-
-        // iElement.classList.add('fa-solid')
-        // iElement.classList.add('fa-droplet')
-        divElement.style.color = 'rgba(13, 176, 240, 0.541)'
-        // divElement.style.animationDuration = Math.random() * 2 + 's'
         divElement.style.left = Math.random() * window.innerWidth + 'px'
         divElement.style.opacity = Math.random() + 0.4
-        // iElement.style.fontSize = Math.random() * 15 + 'px'
 
         document.body.appendChild(divElement)
 
@@ -30,20 +29,33 @@ export function Rainfall() {
         setIsRaining(!isRaining)
     }
     useEffect(() => {
+        // if (count === 1) {
+        //     setIdInterval(setInterval(rainfall, 10))
+        //     // console.log('start', idInterval)
+        // }
+        // if (count === 2) {
+        //     setCount(0)
+        //     setIdInterval(clearInterval(idInterval))
+        //     // console.log('end :', idInterval)
+        // }
+        const startInterval = () => {
+            const intervalId = setInterval(rainfall, 10)
+            dispatch(setIdInterval(intervalId))
+        }
+
+        const stopInterval = () => {
+            dispatch(clearIdInterval())
+        }
+
         if (count === 1) {
-            setIdInterval(setInterval(rainfall, 10))
-            console.log('start', idInterval)
+            startInterval()
         }
 
         if (count === 2) {
             setCount(0)
-
-            setIdInterval(clearInterval(idInterval))
-            console.log('end :', idInterval)
+            stopInterval()
         }
     }, [isRaining])
-
-    console.log(count)
 
     return (
         <div>

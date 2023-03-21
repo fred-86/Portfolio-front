@@ -1,10 +1,20 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import error404 from '../Assets/img/error404.jpg'
 
 import { Rainfall } from '../Components/RainFall'
+import { useLocation } from 'react-router-dom'
 
 export function Error404() {
+    const location = useLocation()
+    const [error, setError] = useState(false)
+    console.log(location)
+
+    useEffect(() => {
+        if (location.key === 'default') {
+            setError(!error)
+        }
+    }, [location])
     return (
         <main className="error404-wrapper">
             <div className="error404-title">
@@ -32,9 +42,7 @@ export function Error404() {
                         <li className="link-item">
                             Soit regarder la pluie tomber
                         </li>
-                        <li className="link-item">
-                            <Rainfall />
-                        </li>
+                        <li className="link-item">{error && <Rainfall />}</li>
                     </ul>
                     <p>C'est vous qui voyez 😃</p>
                 </div>

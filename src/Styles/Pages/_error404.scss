@@ -28,6 +28,11 @@
         &-img {
             width: 50%;
             height: auto;
+            transform: translateX(0);
+        }
+        &-img:hover {
+            animation: img-loop 0.2s ease-in-out infinite alternate;
+            -moz-animation: img-loop 0.2s ease-in-out infinite alternate;
         }
         &-link {
             width: 50%;
@@ -98,6 +103,16 @@
     }
     100% {
         top: 100%;
+    }
+}
+
+@keyframes img-loop {
+    0% {
+        transform: translateX(15px);
+    }
+
+    100% {
+        transform: translateX(0);
     }
 }
 
