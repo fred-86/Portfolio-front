@@ -1,0 +1,46 @@
+.loader {
+    padding: 50px;
+    border: 6px solid $color-primary;
+    border-bottom-color: transparent;
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: rotate 1s infinite linear;
+    height: 0;
+    width: 0;
+    position: absolute;
+    top: 40%;
+    left: 47%;
+    // transform: translate(-50%, -50%);
+}
+
+@keyframes rotate {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@media screen and (max-width: 375px) {
+    .loader {
+        padding: 20px;
+        top: 50%;
+        left: 44%;
+    }
+}
+@media screen and (min-width: 376px) and (max-width: 675px) {
+    .loader {
+        padding: 30px;
+        // top: 50%;
+        left: 44%;
+    }
+}
+
+@media (orientation: landscape) {
+    .loader {
+        padding: 25px;
+        top: 50%;
+        left: 47%;
+    }
+}

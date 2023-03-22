@@ -11,6 +11,7 @@
         .img {
             width: 100%;
             height: auto;
+            object-fit: scale-down;
         }
         .img-profil {
             width: 100%;
@@ -21,7 +22,7 @@
 
     .card-title {
         padding: 5px;
-        margin-top: 10px;
+        margin-top: -10px;
         .title {
             font-size: 2vw;
             color: $color-fifth;
@@ -41,9 +42,29 @@
         }
 
         .card-title {
-            margin-top: -120px;
+            margin-top: -150px;
             .title {
-                font-size: 1rem;
+                font-size: 1.2rem;
+            }
+        }
+    }
+}
+
+@media all and (min-width: 376px) and (max-width: 767px) {
+    .card-container {
+        .card-img {
+            .img {
+                height: 200px;
+            }
+            .img-profil {
+                height: 200px;
+            }
+        }
+
+        .card-title {
+            margin-top: -30px;
+            .title {
+                font-size: 1.2rem;
             }
         }
     }

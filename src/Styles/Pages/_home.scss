@@ -2,10 +2,10 @@
     margin-top: 150px;
     padding: 3rem 0;
     width: 100%;
+    min-height: 70vh;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
     .banner-wrapper {
         margin-bottom: 20px;
     }
@@ -19,3 +19,14 @@
         margin-top: 75px;
     }
 }
+@media all and (min-width: 376px) and (max-width: 767px) {
+    .home-wrapper {
+        margin-top: 100px;
+        min-height: 60vh;
+    }
+}
+// @media all and (min-width: 768px) {
+//     .home-wrapper {
+//         margin-top: 0px;
+//     }
+// }

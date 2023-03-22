@@ -1,13 +1,14 @@
 import { useState, useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { setIdInterval, clearIdInterval } from '../__features__/counter.slice'
-
+/**
+ * @component
+ *  in charge of launching the rain animation
+ * @returns  {React.ReactElement}
+ */
 export function Rainfall() {
     const [isRaining, setIsRaining] = useState(false)
-    const [count, setCount] = useState(0)
-    // const [idInterval, setIdInterval] = useState(0)
 
-    // const idInterval = useSelector((state) => state.interval.idInterval)
     const dispatch = useDispatch()
 
     function rainfall() {
@@ -25,19 +26,9 @@ export function Rainfall() {
     }
 
     function handleClick() {
-        setCount(count + 1)
         setIsRaining(!isRaining)
     }
     useEffect(() => {
-        // if (count === 1) {
-        //     setIdInterval(setInterval(rainfall, 10))
-        //     // console.log('start', idInterval)
-        // }
-        // if (count === 2) {
-        //     setCount(0)
-        //     setIdInterval(clearInterval(idInterval))
-        //     // console.log('end :', idInterval)
-        // }
         const startInterval = () => {
             const intervalId = setInterval(rainfall, 10)
             dispatch(setIdInterval(intervalId))
@@ -46,13 +37,9 @@ export function Rainfall() {
         const stopInterval = () => {
             dispatch(clearIdInterval())
         }
-
-        if (count === 1) {
+        if (isRaining) {
             startInterval()
-        }
-
-        if (count === 2) {
-            setCount(0)
+        } else {
             stopInterval()
         }
     }, [isRaining])

@@ -3,6 +3,7 @@
 @import '../Styles/Base/base';
 
 @import './Components/logo';
+@import './Components/loader';
 
 @import './Layout/layout';
 @import './Layout/header';
@@ -18,3 +19,4 @@
 @import './Pages/projects';
 @import './Pages/skills';
 @import './Pages/error404';
+@import './Pages/contact';

@@ -16,7 +16,8 @@
         align-items: center;
     }
 
-    .footer-copyright > p {
+    .footer-copyright > p,
+    .footer-link > a {
         font-size: 1.2rem;
     }
     .logo--footer:hover {
@@ -39,3 +40,9 @@
         position: fixed;
     }
 }
+
+// @media (min-width: 375px) and (orientation: landscape) {
+//     .footer-wrapper {
+//         position: static;
+//     }
+// }

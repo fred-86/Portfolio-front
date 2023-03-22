@@ -18,7 +18,6 @@ export const personsSlice = createSlice({
                 state.error = null
             })
             .addCase(getPersons.fulfilled, (state, { payload }) => {
-                console.log(payload)
                 state.loading = false
                 state.personsInfo = payload
                 state.error = null

@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import { Logo } from './Logo'
 /**
  * Footer to the app
@@ -14,7 +15,7 @@ export function Footer() {
                 <Logo />
             </section>
             <section className="footer-link">
-                <p>Un lien</p>
+                <Link to="/Contact">Contact</Link>
             </section>
         </footer>
     )

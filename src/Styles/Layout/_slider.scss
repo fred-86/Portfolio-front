@@ -3,7 +3,7 @@
     height: 400px;
     position: absolute;
     left: 50%;
-    top: 50%;
+    top: 55%;
     margin-left: -200px;
     margin-top: -200px;
     z-index: 1;
@@ -14,11 +14,21 @@
     background-size: cover;
 }
 
-@media all and (max-width: 375px) {
+@media screen and (max-width: 375px) {
     .swiper {
-        width: 200px;
-        height: 200px;
-        top: 65%;
+        width: 220px;
+        height: 220px;
+        top: 50%;
+        margin-left: -110px;
+    }
+}
+
+@media screen and (min-width: 375px) and (max-width: 767px) {
+    .swiper {
+        width: 250px;
+        height: 250px;
+        top: 55%;
+        left: 44%;
         margin-left: -100px;
     }
 }

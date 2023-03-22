@@ -1,0 +1,16 @@
+.contact-wrapper {
+    margin-top: 150px;
+    padding: 3rem 0;
+    width: 100%;
+}
+
+@media all and (min-width: 376px) and (max-width: 675px) {
+    .contact-wrapper {
+        min-height: 80vh;
+    }
+}
+@media (orientation: landscape) {
+    .contact-wrapper {
+        min-height: 80vh;
+    }
+}

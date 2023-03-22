@@ -15,6 +15,18 @@ export function NavBar() {
             <ul className="navbar_links">
                 <li className="navbar_item">
                     <NavLink
+                        to="/"
+                        className={({ isActive }) =>
+                            isActive ? 'active ' : 'navbar_link'
+                        }
+                        end
+                        onClick={handleShowLinks}
+                    >
+                        Acceuil
+                    </NavLink>
+                </li>
+                <li className="navbar_item">
+                    <NavLink
                         to="/Profil"
                         className={({ isActive }) =>
                             isActive ? '  active ' : 'navbar_link'
@@ -47,18 +59,6 @@ export function NavBar() {
                         onClick={handleShowLinks}
                     >
                         Mes Projets
-                    </NavLink>
-                </li>
-                <li className="navbar_item">
-                    <NavLink
-                        to="/"
-                        className={({ isActive }) =>
-                            isActive ? 'active ' : 'navbar_link'
-                        }
-                        end
-                        onClick={handleShowLinks}
-                    >
-                        Secret
                     </NavLink>
                 </li>
             </ul>
