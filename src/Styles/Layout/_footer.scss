@@ -37,7 +37,9 @@
 
 @media screen and (max-width: 767px) {
     .footer-wrapper {
-        position: fixed;
+        position: static;
+        width: 99%;
+        padding: 2px;
     }
 }
 

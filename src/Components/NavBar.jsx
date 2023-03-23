@@ -61,6 +61,18 @@ export function NavBar() {
                         Mes Projets
                     </NavLink>
                 </li>
+                <li className="navbar_item">
+                    <NavLink
+                        to="/Sign-in"
+                        className={({ isActive }) =>
+                            isActive ? 'active ' : 'navbar_link'
+                        }
+                        end
+                        onClick={handleShowLinks}
+                    >
+                        Admin
+                    </NavLink>
+                </li>
             </ul>
             <button className="navbar_burger" onClick={handleShowLinks}>
                 <span className="burger_bar"></span>
