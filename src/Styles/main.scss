@@ -5,6 +5,8 @@
 @import './Components/logo';
 @import './Components/loader';
 
+/**********   public  ***********/
+
 @import './Layout/layout';
 @import './Layout/header';
 @import './Layout/navBar';
@@ -20,4 +22,10 @@
 @import './Pages/skills';
 @import './Pages/error404';
 @import './Pages/contact';
+
+/**********   auth  ***********/
 @import './Pages/login';
+
+/**********   admin  ***********/
+
+@import './Layout/admin/adminHeader';

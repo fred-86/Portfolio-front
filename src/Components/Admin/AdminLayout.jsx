@@ -1,12 +1,15 @@
 import React from 'react'
 import { Outlet } from 'react-router-dom'
-// import { Footer } from './Footer'
-// import { Header } from './Header'
 
+import { AdminHeader } from './AdminHeader'
+/**
+ * Layout that contains the different pages for admin
+ * @returns  {React.ReactElement}
+ */
 export function AdminLayout() {
     return (
         <div className="admin-layout">
-            <h1>Admin layout</h1>
+            <AdminHeader />
             <Outlet />
         </div>
     )

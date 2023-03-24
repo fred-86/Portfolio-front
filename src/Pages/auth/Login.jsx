@@ -14,7 +14,7 @@ export function Login() {
 
     useEffect(() => {
         if (isLogged.logged) {
-            navigate('/admin', { replace: true })
+            navigate('/admin/dashboard', { replace: true })
         }
     }, [isLogged])
     const initialValues = {
