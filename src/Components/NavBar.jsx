@@ -63,7 +63,7 @@ export function NavBar() {
                 </li>
                 <li className="navbar_item">
                     <NavLink
-                        to="/Sign-in"
+                        to="/admin/dashboard"
                         className={({ isActive }) =>
                             isActive ? 'active ' : 'navbar_link'
                         }

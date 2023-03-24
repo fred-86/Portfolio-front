@@ -3,8 +3,8 @@ import { userLogin } from '../__services__/login.action'
 
 const initialState = {
     loading: false,
-    userToken: null, // for storing the JWT
     error: null,
+    user: null,
     logged: false, // for monitoring the registration process.
 }
 export const loginSlice = createSlice({
@@ -24,10 +24,11 @@ export const loginSlice = createSlice({
             })
 
             .addCase(userLogin.fulfilled, (state, { payload }) => {
+                console.log(payload)
                 state.loading = false
                 state.logged = true
-                state.userToken = payload.body.token
                 state.error = null
+                state.user = payload
             })
             .addCase(userLogin.rejected, (state, payload) => {
                 state.loading = false

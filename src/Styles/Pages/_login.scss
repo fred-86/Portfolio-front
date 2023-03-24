@@ -1,0 +1,55 @@
+.login-wrapper {
+    width: 50%;
+    margin: 200px 0 0;
+    padding: 3rem 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .login-form {
+        width: 80%;
+        margin: 20px auto 0;
+        .form {
+            text-align: center;
+            padding: 1rem;
+            .form-group {
+                display: flex;
+                flex-direction: column;
+                width: 40%;
+                margin: 20px auto;
+                &--btn {
+                    flex-direction: row;
+                    justify-content: center;
+
+                    .btn {
+                        border-radius: 50% 20% / 10% 40%;
+                        text-align: center;
+                        margin: 0 5px;
+                        font-size: 0.9rem;
+                        padding: 5px;
+                    }
+                }
+                .form-label {
+                    margin-bottom: 10px;
+                    font-size: 1.5rem;
+                }
+
+                .form-control {
+                    font-size: 1rem;
+                    padding: 5px;
+                    border-radius: 10px;
+                    border: 1px solid $color-fifth;
+                }
+                .form-control:hover {
+                    box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.329);
+                }
+                .text-danger {
+                    text-align: left;
+                    margin-top: 5px;
+                    color: red;
+                    font-size: 1rem;
+                }
+            }
+        }
+    }
+}

@@ -1,9 +1,9 @@
 import { Navigate } from 'react-router-dom'
 
 import PropTypes from 'prop-types'
+import { selectLogged } from '../_helpers__/selectorLogged'
 // import { accountService } from '../_services/account.services'
-// import { useSelector } from 'react-redux'
-// import { selectLogged } from './selectors'
+import { useSelector } from 'react-redux'
 
 /**
  * Fonction de vérification de token
@@ -13,10 +13,11 @@ import PropTypes from 'prop-types'
  * @returns {ReactNode}
  */
 export const AuthGuard = ({ children }) => {
-    const islogged = useSelector(selectLogged)
+    const isLogged = useSelector(selectLogged)
+    console.log('object', isLogged)
 
-    if (!islogged.logged) {
-        return <Navigate to="/Sign-in" />
+    if (!isLogged.logged) {
+        return <Navigate to="/auth/sign-in" />
     }
     return children
 }
