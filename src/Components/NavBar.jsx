@@ -1,82 +1,18 @@
 import React, { useState } from 'react'
 import { NavLink } from 'react-router-dom'
+import { Nav } from './Nav'
 /**
- *
- * @returns
+ * Nav Bar public
+ *@component
+ * @returns {React.ReactElement}
  */
 export function NavBar() {
-    const [showLinks, setShowLinks] = useState(false)
-
-    const handleShowLinks = () => {
-        setShowLinks(!showLinks)
-    }
-    return (
-        <nav className={`navbar-wrapper ${showLinks ? 'show-nav' : ' '}`}>
-            <ul className="navbar_links">
-                <li className="navbar_item">
-                    <NavLink
-                        to="/"
-                        className={({ isActive }) =>
-                            isActive ? 'active ' : 'navbar_link'
-                        }
-                        end
-                        onClick={handleShowLinks}
-                    >
-                        Acceuil
-                    </NavLink>
-                </li>
-                <li className="navbar_item">
-                    <NavLink
-                        to="/Profil"
-                        className={({ isActive }) =>
-                            isActive ? '  active ' : 'navbar_link'
-                        }
-                        end
-                        onClick={handleShowLinks}
-                    >
-                        Mon Profil
-                    </NavLink>
-                </li>
-                <li className="navbar_item">
-                    <NavLink
-                        to="/Skills"
-                        className={({ isActive }) =>
-                            isActive ? 'active ' : 'navbar_link'
-                        }
-                        end
-                        onClick={handleShowLinks}
-                    >
-                        Mes Compétences
-                    </NavLink>
-                </li>
-                <li className="navbar_item">
-                    <NavLink
-                        to="/Projects"
-                        className={({ isActive }) =>
-                            isActive ? 'active ' : 'navbar_link'
-                        }
-                        end
-                        onClick={handleShowLinks}
-                    >
-                        Mes Projets
-                    </NavLink>
-                </li>
-                <li className="navbar_item">
-                    <NavLink
-                        to="/admin/dashboard"
-                        className={({ isActive }) =>
-                            isActive ? 'active ' : 'navbar_link'
-                        }
-                        end
-                        onClick={handleShowLinks}
-                    >
-                        Admin
-                    </NavLink>
-                </li>
-            </ul>
-            <button className="navbar_burger" onClick={handleShowLinks}>
-                <span className="burger_bar"></span>
-            </button>
-        </nav>
-    )
+    const links = [
+        { name: 'Acceuil', path: '/' },
+        { name: 'Mon Profil', path: '/Profil' },
+        { name: 'Mes Compétences', path: '/Skills' },
+        { name: 'Mes Projets', path: '/Projects' },
+        { name: 'Admin', path: '/admin/dashboard' },
+    ]
+    return <Nav links={links} />
 }

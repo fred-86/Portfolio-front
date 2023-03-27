@@ -81,7 +81,7 @@
         .navbar_burger {
             display: block;
             position: fixed;
-            top: 4.2rem;
+            top: 13vh;
             right: 1rem;
             z-index: 1001;
             .burger_bar,
@@ -95,6 +95,7 @@
                 background: #fff;
                 transition: all 0.5s ease-in-out;
             }
+
             .burger_bar::before,
             .burger_bar::after {
                 content: ' ';
@@ -111,6 +112,16 @@
         }
         .navbar_burger:hover {
             cursor: pointer;
+        }
+    }
+    .admin {
+        .navbar_burger {
+            top: 0.3rem;
+        }
+    }
+    .show-nav.admin {
+        .navbar_burger {
+            top: 0.3rem;
         }
     }
     .show-nav {
