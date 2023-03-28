@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 /**
  * Generic NavBar
  * @component
- * @prop {Array.<{name:String,path:String}>} links - array containing name and path
+ * @prop {Array.<{name:String | element,path:String}>} links - array containing name and path
  * @prop {React.ElementType} component- the component to render instead of NavLink, if provided
  * @returns  {React.ReactElement}
  */
@@ -50,7 +50,7 @@ export function Nav({ links, customClass }) {
 Nav.propTypes = {
     links: PropTypes.arrayOf(
         PropTypes.shape({
-            name: PropTypes.string,
+            name: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
             path: PropTypes.string,
             component: PropTypes.oneOfType([PropTypes.func, PropTypes.element]),
         })

@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'
+import { getAuth, signInWithEmailAndPassword, signOut } from 'firebase/auth'
 
 // export const userLogin = createAsyncThunk(
 //     'userLogin',
@@ -40,3 +40,14 @@ export const userLogin = createAsyncThunk(
         }
     }
 )
+
+export const userLogout = () => {
+    const auth = getAuth()
+    signOut(auth)
+        .then(() => {
+            console.log('logout')
+        })
+        .catch((error) => {
+            console.log('error', error)
+        })
+}

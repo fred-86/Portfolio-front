@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { userLogin } from '../__services__/login.action'
+import { userLogin, userLogout } from '../__services__/login.action'
 
 const initialState = {
     loading: false,
@@ -12,7 +12,7 @@ export const loginSlice = createSlice({
     initialState,
     reducers: {
         setLogout: () => {
-            localStorage.removeItem('userToken')
+            userLogout()
             return initialState
         },
     },

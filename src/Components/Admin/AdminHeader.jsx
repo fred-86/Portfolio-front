@@ -1,5 +1,7 @@
 import React from 'react'
-import { Link, NavLink } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { Link } from 'react-router-dom'
+import { setLogout } from '../../__features__/login.slice'
 import { Nav } from '../Nav'
 /**
  * Header for The Admin
@@ -12,9 +14,19 @@ export function AdminHeader() {
         {
             name: 'Logout',
             path: '',
-            component: () => <Link to="/logout">logout</Link>,
+            component: () => (
+                <Link className="navbar_link" to="/" onClick={logout}>
+                    logout
+                </Link>
+            ),
         },
     ]
+
+    const dispatch = useDispatch()
+    const logout = () => {
+        dispatch(setLogout())
+    }
+
     return (
         <header className="admin-header">
             <Nav links={links} customClass="admin" />

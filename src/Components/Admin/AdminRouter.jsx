@@ -1,8 +1,9 @@
 import React from 'react'
 import { Route, Routes } from 'react-router-dom'
 import { DashBoard } from '../../Pages/admin/DashBoard'
+import { Persons } from '../../Pages/admin/Persons'
 import { Error404 } from '../../Pages/Error404'
-import { AdminLayout } from './AdminLayout'
+import { SideBar } from './SideBar'
 
 /**
  *  router to the admin
@@ -11,12 +12,13 @@ import { AdminLayout } from './AdminLayout'
  */
 export function AdminRouter() {
     return (
-        <Routes>
-            <Route element={<AdminLayout />}>
+        <SideBar>
+            <Routes>
                 <Route index element={<DashBoard />} />
                 <Route path="dashboard" element={<DashBoard />} />
-            </Route>
-            <Route path="/*" element={<Error404 />} />
-        </Routes>
+                <Route path="Persons" element={<Persons />} />
+                <Route path="*" element={<Error404 />} />
+            </Routes>
+        </SideBar>
     )
 }
