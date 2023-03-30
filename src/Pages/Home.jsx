@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 // import { useDispatch, useSelector } from 'react-redux'
 import { Banner } from '../Components/Banner'
@@ -16,8 +16,6 @@ export function Home() {
     // addData()
     // const dispatch = useDispatch()
     // // const persons = useSelector(selectPersons)
-
-    // const flag = useRef(false)
 
     useEffect(() => {
         const stopInterval = () => {

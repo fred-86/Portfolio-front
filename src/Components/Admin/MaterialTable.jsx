@@ -1,192 +1,226 @@
-import React, { useCallback, useMemo, useState } from 'react'
+/* eslint-disable react/prop-types */
+import React, { useMemo, useState } from 'react'
 import MaterialReactTable from 'material-react-table'
+import PropTypes from 'prop-types'
+import { Button, Box, IconButton, Tooltip, MenuItem } from '@mui/material'
 import {
-    Box,
-    Button,
-    Dialog,
-    DialogActions,
-    DialogContent,
-    DialogTitle,
-    IconButton,
-    MenuItem,
-    Stack,
-    TextField,
-    Tooltip,
-} from '@mui/material'
-import { Delete, Edit } from '@mui/icons-material'
-import { data, states } from './makeData'
+    Edit as EditIcon,
+    Delete as DeleteIcon,
+    Email as EmailIcon,
+} from '@mui/icons-material'
+import { CreateNewPersonModal } from './CreateNewPersonModal'
 
-export const MaterialTable = () => {
-    const [createModalOpen, setCreateModalOpen] = useState(false)
-    const [tableData, setTableData] = useState(() => data)
-    const [validationErrors, setValidationErrors] = useState({})
-
-    const handleCreateNewRow = (values) => {
-        tableData.push(values)
-        setTableData([...tableData])
-    }
-
-    const handleSaveRowEdits = async ({ exitEditingMode, row, values }) => {
-        if (!Object.keys(validationErrors).length) {
-            tableData[row.index] = values
-            // send/receive api updates here, then refetch or update local table data for re-render
-            setTableData([...tableData])
-            exitEditingMode() // required to exit editing mode and close modal
-        }
-    }
-
-    const handleCancelRowEdits = () => {
-        setValidationErrors({})
-    }
-
-    const handleDeleteRow = useCallback(
-        (row) => {
-            if (
-                !confirm(
-                    `Are you sure you want to delete ${row.getValue(
-                        'firstName'
-                    )}`
-                )
-            ) {
-                return
-            }
-            // send api delete request here, then refetch or update local table data for re-render
-            tableData.splice(row.index, 1)
-            setTableData([...tableData])
-        },
-        [tableData]
-    )
-
-    const getCommonEditTextFieldProps = useCallback(
-        (cell) => {
-            return {
-                error: !!validationErrors[cell.id],
-                helperText: validationErrors[cell.id],
-                onBlur: (event) => {
-                    const isValid =
-                        cell.column.id === 'email'
-                            ? validateEmail(event.target.value)
-                            : cell.column.id === 'age'
-                            ? validateAge(+event.target.value)
-                            : validateRequired(event.target.value)
-                    if (!isValid) {
-                        // set validation error for cell if invalid
-                        setValidationErrors({
-                            ...validationErrors,
-                            [cell.id]: `${cell.column.columnDef.header} is required`,
-                        })
-                    } else {
-                        // remove validation error for cell if valid
-                        delete validationErrors[cell.id]
-                        setValidationErrors({
-                            ...validationErrors,
-                        })
-                    }
-                },
-            }
-        },
-        [validationErrors]
-    )
-
+export function MaterialTable({ testdata }) {
+    console.log(testdata)
     const columns = useMemo(
         () => [
             {
-                accessorKey: 'id',
-                header: 'ID',
-                enableColumnOrdering: false,
-                enableEditing: false, // disable editing on this column
+                header: 'Avatar',
+                size: 100,
+                accessorKey: 'avatar',
                 enableSorting: false,
-                size: 80,
+                enableColumnFilter: false,
+
+                // eslint-disable-next-line react/prop-types
+                Cell: ({ row }) => (
+                    <Box>
+                        <img
+                            alt="avatar"
+                            height={30}
+                            // eslint-disable-next-line react/prop-types
+                            src={row.original.avatar}
+                            loading="lazy"
+                            style={{ borderRadius: '50%' }}
+                        />
+                    </Box>
+                ),
+                muiTableHeadCellProps: {
+                    align: 'center',
+                },
+                muiTableBodyCellProps: {
+                    align: 'center',
+                },
             },
             {
-                accessorKey: 'firstName',
                 header: 'First Name',
-                size: 140,
-                muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
-                    ...getCommonEditTextFieldProps(cell),
-                }),
+                size: 60,
+                accessorKey: 'firstName', // accessor is the "key" in the data
+                muiTableHeadCellProps: {
+                    align: 'center',
+                },
+                muiTableBodyCellProps: {
+                    align: 'center',
+                },
             },
             {
-                accessorKey: 'lastName',
                 header: 'Last Name',
-                size: 140,
-                muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
-                    ...getCommonEditTextFieldProps(cell),
-                }),
+                size: 60,
+                accessorKey: 'lastName',
+                muiTableHeadCellProps: {
+                    align: 'center',
+                },
+                muiTableBodyCellProps: {
+                    align: 'center',
+                },
             },
             {
-                accessorKey: 'email',
                 header: 'Email',
-                muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
-                    ...getCommonEditTextFieldProps(cell),
-                    type: 'email',
-                }),
-            },
-            {
-                accessorKey: 'age',
-                header: 'Age',
                 size: 80,
-                muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
-                    ...getCommonEditTextFieldProps(cell),
-                    type: 'number',
-                }),
+                accessorKey: 'email',
+                muiTableHeadCellProps: {
+                    align: 'center',
+                },
+                muiTableBodyCellProps: {
+                    align: 'center',
+                },
             },
             {
-                accessorKey: 'state',
-                header: 'State',
+                header: 'phone',
+                size: 80,
+                accessorKey: 'phone',
+                muiTableHeadCellProps: {
+                    align: 'center',
+                },
+                muiTableBodyCellProps: {
+                    align: 'center',
+                },
+            },
+            {
+                header: 'Liens',
+                size: 80,
+                accessorKey: 'links',
+                // eslint-disable-next-line react/prop-types
+                Cell: ({ row }) => (
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                        }}
+                    >
+                        {row.original.links.map((link) => {
+                            return (
+                                <a key={link.name} href={link.link}>
+                                    {link.name}
+                                </a>
+                            )
+                        })}
+                    </Box>
+                ),
+                muiTableHeadCellProps: {
+                    align: 'center',
+                },
+                muiTableBodyCellProps: {
+                    align: 'center',
+                },
+            },
+
+            {
+                header: 'Status',
+                size: 50,
+                accessorFn: (originalRow) =>
+                    originalRow.status ? 'true' : 'false',
+                filterVariant: 'checkbox',
+                Cell: ({ cell }) =>
+                    cell.getValue() === 'true' ? 'Actif' : 'Inactif',
                 muiTableBodyCellEditTextFieldProps: {
                     select: true, // change to select for a dropdown
-                    children: states.map((state) => (
-                        <MenuItem key={state} value={state}>
-                            {state}
+                    children: testdata.map((item) => (
+                        <MenuItem key={item.id} value={item.status}>
+                            {item.status}
                         </MenuItem>
                     )),
                 },
+                muiTableHeadCellProps: {
+                    align: 'center',
+                },
+                muiTableBodyCellProps: {
+                    align: 'center',
+                },
             },
         ],
-        [getCommonEditTextFieldProps]
+        []
     )
+    const [createModalOpen, setCreateModalOpen] = useState(false)
+    // copy data for the state
+    const newData = testdata.map((item) => ({
+        ...item,
+    }))
+    const [data, setData] = useState(newData)
+    const handleSaveRowEdits = async ({ exitEditingMode, row, values }) => {
+        data[row.index] = values
+        setData([...data])
+        exitEditingMode()
+        // if (!Object.keys(validationErrors).length) {
+        //     data[row.index] = values
+        //     // send/receive api updates here, then refetch or update local table data for re-render
+        //     setData([...data])
+        //     exitEditingMode() // required to exit editing mode and close modal
+        // }
+    }
+    const handleCreateNewRow = (values) => {
+        data.push(values)
+        setData([...data])
+    }
+    const handleCancelRowEdits = () => {
+        // setValidationErrors({});
+        console.log('setValidationErrors')
+    }
 
     return (
-        <>
+        <section className="table-wrapper">
             <MaterialReactTable
-                displayColumnDefOptions={{
-                    'mrt-row-actions': {
-                        muiTableHeadCellProps: {
-                            align: 'center',
-                        },
-                        size: 120,
-                    },
-                }}
                 columns={columns}
-                data={tableData}
-                editingMode="modal" // default
-                enableColumnOrdering
+                data={data}
+                enableDensityToggle={false}
                 enableEditing
                 onEditingRowSave={handleSaveRowEdits}
                 onEditingRowCancel={handleCancelRowEdits}
+                enableRowActions
                 renderRowActions={({ row, table }) => (
-                    <Box sx={{ display: 'flex', gap: '1rem' }}>
-                        <Tooltip arrow placement="left" title="Edit">
+                    <Box
+                        sx={{ display: 'flex', flexWrap: 'nowrap', gap: '8px' }}
+                    >
+                        <Tooltip arrow placement="left" title="send">
                             <IconButton
-                                onClick={() => table.setEditingRow(row)}
+                                color="primary"
+                                onClick={() =>
+                                    window.open(
+                                        `mailto:${row.original.email}?subject=Hello ${row.original.firstName}!`
+                                    )
+                                }
                             >
-                                <Edit />
+                                <EmailIcon />
                             </IconButton>
                         </Tooltip>
-                        <Tooltip arrow placement="right" title="Delete">
+                        <Tooltip arrow placement="left" title="Edit">
+                            <IconButton
+                                color="warning"
+                                onClick={() => {
+                                    table.setEditingRow(row)
+                                }}
+                            >
+                                <EditIcon />
+                            </IconButton>
+                        </Tooltip>
+                        <Tooltip arrow placement="left" title="delete">
                             <IconButton
                                 color="error"
-                                onClick={() => handleDeleteRow(row)}
+                                onClick={() => {
+                                    console.log('row', row.index)
+                                    console.log('data', data)
+
+                                    data.splice(row.index, 1) // assuming simple data table
+                                    setData([...data])
+                                }}
                             >
-                                <Delete />
+                                <DeleteIcon />
                             </IconButton>
                         </Tooltip>
                     </Box>
                 )}
                 renderTopToolbarCustomActions={() => (
                     <Button
-                        color="secondary"
+                        color="info"
                         onClick={() => setCreateModalOpen(true)}
                         variant="contained"
                     >
@@ -194,81 +228,29 @@ export const MaterialTable = () => {
                     </Button>
                 )}
             />
-            <CreateNewAccountModal
+            <CreateNewPersonModal
                 columns={columns}
                 open={createModalOpen}
                 onClose={() => setCreateModalOpen(false)}
                 onSubmit={handleCreateNewRow}
             />
-        </>
+        </section>
     )
 }
 
-// example of creating a mui dialog modal for creating new rows
-export const CreateNewAccountModal = ({ open, columns, onClose, onSubmit }) => {
-    const [values, setValues] = useState(() =>
-        columns.reduce((acc, column) => {
-            acc[column.accessorKey ?? ''] = ''
-            return acc
-        }, {})
-    )
-
-    const handleSubmit = () => {
-        // put your validation logic here
-        onSubmit(values)
-        onClose()
-    }
-
-    return (
-        <Dialog open={open}>
-            <DialogTitle textAlign="center">Create New Account</DialogTitle>
-            <DialogContent>
-                <form onSubmit={(e) => e.preventDefault()}>
-                    <Stack
-                        sx={{
-                            width: '100%',
-                            minWidth: { xs: '300px', sm: '360px', md: '400px' },
-                            gap: '1.5rem',
-                        }}
-                    >
-                        {columns.map((column) => (
-                            <TextField
-                                key={column.accessorKey}
-                                label={column.header}
-                                name={column.accessorKey}
-                                onChange={(e) =>
-                                    setValues({
-                                        ...values,
-                                        [e.target.name]: e.target.value,
-                                    })
-                                }
-                            />
-                        ))}
-                    </Stack>
-                </form>
-            </DialogContent>
-            <DialogActions sx={{ p: '1.25rem' }}>
-                <Button onClick={onClose}>Cancel</Button>
-                <Button
-                    color="secondary"
-                    onClick={handleSubmit}
-                    variant="contained"
-                >
-                    Create New Account
-                </Button>
-            </DialogActions>
-        </Dialog>
-    )
+MaterialTable.propTypes = {
+    testdata: PropTypes.arrayOf(
+        PropTypes.shape({
+            avatar: PropTypes.string,
+            firstName: PropTypes.string,
+            lastName: PropTypes.string,
+            email: PropTypes.string,
+            phone: PropTypes.string,
+            status: PropTypes.bool,
+            links: PropTypes.shape({
+                link: PropTypes.string,
+                name: PropTypes.string,
+            }),
+        })
+    ).isRequired,
 }
-
-const validateRequired = (value) => !!value.length
-const validateEmail = (email) =>
-    !!email.length &&
-    email
-        .toLowerCase()
-        .match(
-            /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-        )
-const validateAge = (age) => age >= 18 && age <= 50
-
-export default Example
