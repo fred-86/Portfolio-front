@@ -2,16 +2,24 @@
 import React, { useMemo, useState } from 'react'
 import MaterialReactTable from 'material-react-table'
 import PropTypes from 'prop-types'
-import { Button, Box, IconButton, Tooltip, MenuItem } from '@mui/material'
+import {
+    Button,
+    Box,
+    IconButton,
+    Tooltip,
+    MenuItem,
+    Checkbox,
+    TextField,
+} from '@mui/material'
 import {
     Edit as EditIcon,
     Delete as DeleteIcon,
     Email as EmailIcon,
 } from '@mui/icons-material'
 import { CreateNewPersonModal } from './CreateNewPersonModal'
+import { TestComponent } from './TestComponent'
 
 export function MaterialTable({ testdata }) {
-    console.log(testdata)
     const columns = useMemo(
         () => [
             {
@@ -20,20 +28,20 @@ export function MaterialTable({ testdata }) {
                 accessorKey: 'avatar',
                 enableSorting: false,
                 enableColumnFilter: false,
-
-                // eslint-disable-next-line react/prop-types
                 Cell: ({ row }) => (
                     <Box>
                         <img
                             alt="avatar"
                             height={30}
-                            // eslint-disable-next-line react/prop-types
                             src={row.original.avatar}
                             loading="lazy"
                             style={{ borderRadius: '50%' }}
                         />
                     </Box>
                 ),
+                muiTableBodyCellEditTextFieldProps: {
+                    variant: 'outlined',
+                },
                 muiTableHeadCellProps: {
                     align: 'center',
                 },
@@ -44,7 +52,10 @@ export function MaterialTable({ testdata }) {
             {
                 header: 'First Name',
                 size: 60,
-                accessorKey: 'firstName', // accessor is the "key" in the data
+                accessorKey: 'firstName',
+                muiTableBodyCellEditTextFieldProps: {
+                    variant: 'outlined',
+                },
                 muiTableHeadCellProps: {
                     align: 'center',
                 },
@@ -56,6 +67,9 @@ export function MaterialTable({ testdata }) {
                 header: 'Last Name',
                 size: 60,
                 accessorKey: 'lastName',
+                muiTableBodyCellEditTextFieldProps: {
+                    variant: 'outlined',
+                },
                 muiTableHeadCellProps: {
                     align: 'center',
                 },
@@ -67,6 +81,9 @@ export function MaterialTable({ testdata }) {
                 header: 'Email',
                 size: 80,
                 accessorKey: 'email',
+                muiTableBodyCellEditTextFieldProps: {
+                    variant: 'outlined',
+                },
                 muiTableHeadCellProps: {
                     align: 'center',
                 },
@@ -78,6 +95,9 @@ export function MaterialTable({ testdata }) {
                 header: 'phone',
                 size: 80,
                 accessorKey: 'phone',
+                muiTableBodyCellEditTextFieldProps: {
+                    variant: 'outlined',
+                },
                 muiTableHeadCellProps: {
                     align: 'center',
                 },
@@ -89,7 +109,6 @@ export function MaterialTable({ testdata }) {
                 header: 'Liens',
                 size: 80,
                 accessorKey: 'links',
-                // eslint-disable-next-line react/prop-types
                 Cell: ({ row }) => (
                     <Box
                         sx={{
@@ -99,13 +118,30 @@ export function MaterialTable({ testdata }) {
                     >
                         {row.original.links.map((link) => {
                             return (
-                                <a key={link.name} href={link.link}>
+                                <a
+                                    key={link.name}
+                                    href={link.link}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                >
                                     {link.name}
                                 </a>
                             )
                         })}
                     </Box>
                 ),
+                Edit: ({ cell, column, table }) => (
+                    <TestComponent linksValue={cell.getValue()} />
+                ),
+                // console.log({
+                //     cell: cell.getValue(),
+                //     colum: column,
+                //     table: table,
+                // }),
+                muiTableBodyCellEditTextFieldProps: {
+                    variant: 'outlined',
+                },
+
                 muiTableHeadCellProps: {
                     align: 'center',
                 },
@@ -120,15 +156,20 @@ export function MaterialTable({ testdata }) {
                 accessorFn: (originalRow) =>
                     originalRow.status ? 'true' : 'false',
                 filterVariant: 'checkbox',
-                Cell: ({ cell }) =>
+
+                Cell: ({ cell, row }) => (
                     cell.getValue() === 'true' ? 'Actif' : 'Inactif',
+                    (
+                        <Checkbox
+                            checked={cell.getValue() === 'true'}
+                            onChange={(event) =>
+                                handleCheckboxChange(event, row.index)
+                            }
+                        />
+                    )
+                ),
                 muiTableBodyCellEditTextFieldProps: {
-                    select: true, // change to select for a dropdown
-                    children: testdata.map((item) => (
-                        <MenuItem key={item.id} value={item.status}>
-                            {item.status}
-                        </MenuItem>
-                    )),
+                    variant: 'outlined',
                 },
                 muiTableHeadCellProps: {
                     align: 'center',
@@ -148,8 +189,10 @@ export function MaterialTable({ testdata }) {
     const [data, setData] = useState(newData)
     const handleSaveRowEdits = async ({ exitEditingMode, row, values }) => {
         data[row.index] = values
+        console.log('values', values)
         setData([...data])
         exitEditingMode()
+        console.log('data', data)
         // if (!Object.keys(validationErrors).length) {
         //     data[row.index] = values
         //     // send/receive api updates here, then refetch or update local table data for re-render
@@ -165,6 +208,11 @@ export function MaterialTable({ testdata }) {
         // setValidationErrors({});
         console.log('setValidationErrors')
     }
+    const handleCheckboxChange = (event, rowIndex) => {
+        const updatedData = [...data]
+        updatedData[rowIndex].status = event.target.checked
+        setData(updatedData)
+    }
 
     return (
         <section className="table-wrapper">
@@ -173,6 +221,7 @@ export function MaterialTable({ testdata }) {
                 data={data}
                 enableDensityToggle={false}
                 enableEditing
+                editingMode="modal"
                 onEditingRowSave={handleSaveRowEdits}
                 onEditingRowCancel={handleCancelRowEdits}
                 enableRowActions
@@ -247,10 +296,12 @@ MaterialTable.propTypes = {
             email: PropTypes.string,
             phone: PropTypes.string,
             status: PropTypes.bool,
-            links: PropTypes.shape({
-                link: PropTypes.string,
-                name: PropTypes.string,
-            }),
+            links: PropTypes.arrayOf(
+                PropTypes.shape({
+                    link: PropTypes.string,
+                    name: PropTypes.string,
+                })
+            ),
         })
     ).isRequired,
 }

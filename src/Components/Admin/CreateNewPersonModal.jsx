@@ -19,10 +19,26 @@ export const CreateNewPersonModal = ({ open, columns, onClose, onSubmit }) => {
         }, {})
     )
 
+    const [links, setLinks] = useState([{ name: '', link: '' }])
+
     const handleSubmit = () => {
         // put your validation logic here
-        onSubmit(values)
+        const data = {
+            ...values,
+            links,
+        }
+        onSubmit(data)
         onClose()
+    }
+
+    const handleLinkChange = (index, key, value) => {
+        const newLinks = [...links]
+        newLinks[index][key] = value
+        setLinks(newLinks)
+    }
+
+    const handleAddLink = () => {
+        setLinks([...links, { name: '', link: '' }])
     }
 
     return (
@@ -50,6 +66,33 @@ export const CreateNewPersonModal = ({ open, columns, onClose, onSubmit }) => {
                                 }
                             />
                         ))}
+                        {links.map((link, index) => (
+                            <div key={index}>
+                                <TextField
+                                    label="Link Name"
+                                    value={link.name}
+                                    onChange={(e) =>
+                                        handleLinkChange(
+                                            index,
+                                            'name',
+                                            e.target.value
+                                        )
+                                    }
+                                />
+                                <TextField
+                                    label="Link URL"
+                                    value={link.link}
+                                    onChange={(e) =>
+                                        handleLinkChange(
+                                            index,
+                                            'link',
+                                            e.target.value
+                                        )
+                                    }
+                                />
+                            </div>
+                        ))}
+                        <Button onClick={handleAddLink}>Add Link</Button>
                     </Stack>
                 </form>
             </DialogContent>
