@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import { TextField } from '@mui/material'
 
-export function TestComponent({ linksValue }) {
+export function TestComponent({ linksValue, onChange }) {
     const [links, setLinks] = useState(
         linksValue.map((link) => ({
             name: link.name,
@@ -14,8 +14,9 @@ export function TestComponent({ linksValue }) {
         const newLinks = [...links]
         newLinks[index] = { ...newLinks[index], [name]: value }
         setLinks(newLinks)
+        onChange(e, index)
     }
-    console.log('linksValue', linksValue)
+
     return (
         <div>
             {links.map((link, index) => (
@@ -45,4 +46,5 @@ TestComponent.propTypes = {
             name: PropTypes.string,
         })
     ),
+    onChange: PropTypes.func,
 }

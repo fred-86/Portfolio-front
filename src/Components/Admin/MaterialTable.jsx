@@ -18,6 +18,8 @@ import {
 } from '@mui/icons-material'
 import { CreateNewPersonModal } from './CreateNewPersonModal'
 import { TestComponent } from './TestComponent'
+import { useDispatch } from 'react-redux'
+import { registerPersons } from '../../__services__/persons.action'
 
 export function MaterialTable({ testdata }) {
     const columns = useMemo(
@@ -130,14 +132,21 @@ export function MaterialTable({ testdata }) {
                         })}
                     </Box>
                 ),
-                Edit: ({ cell, column, table }) => (
-                    <TestComponent linksValue={cell.getValue()} />
+                Edit: ({ cell, row }) => (
+                    console.log({
+                        cell: cell.getValue(),
+                        row: row,
+                    }),
+                    (
+                        <TestComponent
+                            linksValue={cell.getValue()}
+                            onChange={(event, index) =>
+                                handleLinksChange(event, row.index, index)
+                            }
+                        />
+                    )
                 ),
-                // console.log({
-                //     cell: cell.getValue(),
-                //     colum: column,
-                //     table: table,
-                // }),
+
                 muiTableBodyCellEditTextFieldProps: {
                     variant: 'outlined',
                 },
@@ -200,7 +209,27 @@ export function MaterialTable({ testdata }) {
         //     exitEditingMode() // required to exit editing mode and close modal
         // }
     }
+
+    const dispatch = useDispatch()
     const handleCreateNewRow = (values) => {
+        const testValues = {
+            firstName: 'Fred',
+            lastName: 'bob',
+            email: 'bob@gmail.com',
+            phone: '0645254178',
+            avatar: 'image.png',
+            status: true,
+            links: [
+                {
+                    name: 'facebook',
+                    link: 'http://localhost:3000/admin/persons',
+                },
+            ],
+            createdAT: new Date().toLocaleDateString('fr'),
+            updatedAt: new Date().toLocaleDateString('fr'),
+        }
+        console.log(testValues)
+        dispatch(registerPersons(testValues))
         data.push(values)
         setData([...data])
     }
@@ -212,6 +241,33 @@ export function MaterialTable({ testdata }) {
         const updatedData = [...data]
         updatedData[rowIndex].status = event.target.checked
         setData(updatedData)
+    }
+
+    const handleLinksChange = (event, rowIndex, index) => {
+        const newLinks = [...data[rowIndex].links]
+        newLinks[index][event.target.name] = event.target.value
+        const updatedLinks = [...data]
+        // // const updatedLink = {
+        // //     ...updatedLinks[rowIndex].links[index],
+        // //     name: event.target.value,
+        // // }
+        // // updatedLinks[rowIndex].links[index] = updatedLink
+        const updatedLink = {
+            ...updatedLinks[rowIndex].links[index],
+            name: event.target.value,
+        }
+        updatedLinks[rowIndex] = {
+            ...updatedLinks[rowIndex],
+            links: [
+                ...updatedLinks[rowIndex].links.slice(0, index),
+                updatedLink,
+                ...updatedLinks[rowIndex].links.slice(index + 1),
+            ],
+        }
+
+        // console.log('event', updatedLinks)
+
+        // console.log('rowIndex', index)
     }
 
     return (
