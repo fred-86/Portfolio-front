@@ -14,7 +14,6 @@ import { useSelector } from 'react-redux'
  */
 export const AuthGuard = ({ children }) => {
     const isLogged = useSelector(selectLogged)
-    console.log('object', isLogged)
 
     if (!isLogged.logged) {
         return <Navigate to="/auth/sign-in" />

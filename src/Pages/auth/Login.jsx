@@ -22,7 +22,6 @@ export function Login() {
         password: '',
     }
     const handleSubmit = (values, { resetForm }) => {
-        console.log(values)
         const email = values.email
         const password = values.password
         dispatch(userLogin({ email, password }))

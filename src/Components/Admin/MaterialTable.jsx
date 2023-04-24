@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import MaterialReactTable from 'material-react-table'
 import PropTypes from 'prop-types'
 import {
@@ -7,9 +7,8 @@ import {
     Box,
     IconButton,
     Tooltip,
-    MenuItem,
     Checkbox,
-    TextField,
+    FormControlLabel,
 } from '@mui/material'
 import {
     Edit as EditIcon,
@@ -17,11 +16,170 @@ import {
     Email as EmailIcon,
 } from '@mui/icons-material'
 import { CreateNewPersonModal } from './CreateNewPersonModal'
-import { TestComponent } from './TestComponent'
+import { LinksComponent } from './LinksComponent'
 import { useDispatch } from 'react-redux'
-import { registerPersons } from '../../__services__/persons.action'
+import {
+    getPersons,
+    registerPersons,
+    updatePersons,
+} from '../../__services__/persons.action'
 
 export function MaterialTable({ testdata }) {
+    const dispatch = useDispatch()
+    // for avatar
+
+    const avatarEdit = ({ row }) => {
+        const [previewImage, setPreviewImage] = useState(row.original.avatar)
+        return (
+            <>
+                <img
+                    className="field-img"
+                    src={previewImage}
+                    alt={previewImage}
+                />
+                <Button
+                    variant="contained"
+                    component="label"
+                    sx={{
+                        marginBottom: '1rem',
+                    }}
+                >
+                    Upload
+                    <input
+                        hidden
+                        accept="image/*"
+                        multiple
+                        type="file"
+                        // key={column.accessorKey}
+                        // name={column.accessorKey}
+                        // onChange={(e) => {
+                        //     setValues({
+                        //         ...values,
+                        //         [e.target.name]: e.target.files[0],
+                        //     })
+                        //     setPreviewImage(
+                        //         URL.createObjectURL(e.target.files[0])
+                        //     )
+                        // }}
+                    />
+                </Button>
+            </>
+        )
+    }
+    // for checkBox
+    const [isChecked, setIsChecked] = useState(false)
+    const StatusEdit = ({ row }) => {
+        const [checked, setChecked] = useState(false)
+        useEffect(() => {
+            setChecked(row.original.status)
+        }, [row.original.status])
+
+        const handleChange = (event) => {
+            setChecked(event.target.checked)
+            setIsChecked(event.target.checked)
+        }
+
+        return (
+            <Box
+                sx={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'center',
+                }}
+            >
+                <FormControlLabel
+                    control={
+                        <Checkbox
+                            checked={checked}
+                            onChange={handleChange}
+                            inputProps={{ 'aria-label': 'status' }}
+                        />
+                    }
+                    label="Status"
+                    labelPlacement="start"
+                />
+            </Box>
+        )
+    }
+
+    const [createModalOpen, setCreateModalOpen] = useState(false)
+    // copy data for the state
+    const newData = testdata.map((item) => ({
+        ...item,
+    }))
+    const [data, setData] = useState(newData)
+    const handleSaveRowEdits = async ({ exitEditingMode, row, values }) => {
+        data[row.index] = values
+
+        const dataValue = {
+            avatar: values.avatar,
+            firstName: values.firstName,
+            lastName: values.lastName,
+            email: values.email,
+            phone: values.phone,
+            links: values.links,
+            status: isChecked,
+            updatedAt: new Date(),
+        }
+        console.log('update', dataValue)
+        dispatch(updatePersons({ id: row.original.id, dataUpdate: dataValue }))
+
+        setData([...data])
+        exitEditingMode()
+        dispatch(getPersons())
+
+        // if (!Object.keys(validationErrors).length) {
+        //     data[row.index] = values
+        //     // send/receive api updates here, then refetch or update local table data for re-render
+        //     setData([...data])
+        //     exitEditingMode() // required to exit editing mode and close modal
+        // }
+    }
+
+    const handleCreateNewRow = (values) => {
+        const dataValue = {
+            avatar: values.avatar,
+            firstName: values.firstName,
+            lastName: values.lastName,
+            email: values.email,
+            phone: values.phone,
+            links: values.links,
+            status: false,
+            createdAt: new Date(),
+            updatedAt: null,
+        }
+
+        dispatch(registerPersons(dataValue))
+        data.push(values)
+        setData([...data])
+    }
+    const handleCancelRowEdits = () => {
+        // setValidationErrors({});
+        console.log('setValidationErrors')
+    }
+
+    // For Links
+    const handleLinksChange = (event, rowIndex, index) => {
+        const newLinks = [...data[rowIndex].links]
+        newLinks[index][event.target.name] = event.target.value
+        const updatedLinks = [...data]
+        const updatedLink = {
+            ...updatedLinks[rowIndex].links[index],
+            name: event.target.value,
+        }
+        updatedLinks[rowIndex] = {
+            ...updatedLinks[rowIndex],
+            links: [
+                ...updatedLinks[rowIndex].links.slice(0, index),
+                updatedLink,
+                ...updatedLinks[rowIndex].links.slice(index + 1),
+            ],
+        }
+
+        // console.log('event', updatedLinks)
+
+        // console.log('rowIndex', index)
+    }
     const columns = useMemo(
         () => [
             {
@@ -41,6 +199,7 @@ export function MaterialTable({ testdata }) {
                         />
                     </Box>
                 ),
+                Edit: avatarEdit,
                 muiTableBodyCellEditTextFieldProps: {
                     variant: 'outlined',
                 },
@@ -133,18 +292,12 @@ export function MaterialTable({ testdata }) {
                     </Box>
                 ),
                 Edit: ({ cell, row }) => (
-                    console.log({
-                        cell: cell.getValue(),
-                        row: row,
-                    }),
-                    (
-                        <TestComponent
-                            linksValue={cell.getValue()}
-                            onChange={(event, index) =>
-                                handleLinksChange(event, row.index, index)
-                            }
-                        />
-                    )
+                    <LinksComponent
+                        linksValue={cell.getValue()}
+                        onChange={(event, index) =>
+                            handleLinksChange(event, row.index, index)
+                        }
+                    />
                 ),
 
                 muiTableBodyCellEditTextFieldProps: {
@@ -164,19 +317,11 @@ export function MaterialTable({ testdata }) {
                 size: 50,
                 accessorFn: (originalRow) =>
                     originalRow.status ? 'true' : 'false',
-                filterVariant: 'checkbox',
 
-                Cell: ({ cell, row }) => (
+                Cell: ({ cell }) =>
                     cell.getValue() === 'true' ? 'Actif' : 'Inactif',
-                    (
-                        <Checkbox
-                            checked={cell.getValue() === 'true'}
-                            onChange={(event) =>
-                                handleCheckboxChange(event, row.index)
-                            }
-                        />
-                    )
-                ),
+
+                Edit: StatusEdit,
                 muiTableBodyCellEditTextFieldProps: {
                     variant: 'outlined',
                 },
@@ -190,85 +335,6 @@ export function MaterialTable({ testdata }) {
         ],
         []
     )
-    const [createModalOpen, setCreateModalOpen] = useState(false)
-    // copy data for the state
-    const newData = testdata.map((item) => ({
-        ...item,
-    }))
-    const [data, setData] = useState(newData)
-    const handleSaveRowEdits = async ({ exitEditingMode, row, values }) => {
-        data[row.index] = values
-        console.log('values', values)
-        setData([...data])
-        exitEditingMode()
-        console.log('data', data)
-        // if (!Object.keys(validationErrors).length) {
-        //     data[row.index] = values
-        //     // send/receive api updates here, then refetch or update local table data for re-render
-        //     setData([...data])
-        //     exitEditingMode() // required to exit editing mode and close modal
-        // }
-    }
-
-    const dispatch = useDispatch()
-    const handleCreateNewRow = (values) => {
-        const testValues = {
-            firstName: 'Fred',
-            lastName: 'bob',
-            email: 'bob@gmail.com',
-            phone: '0645254178',
-            avatar: 'image.png',
-            status: true,
-            links: [
-                {
-                    name: 'facebook',
-                    link: 'http://localhost:3000/admin/persons',
-                },
-            ],
-            createdAT: new Date().toLocaleDateString('fr'),
-            updatedAt: new Date().toLocaleDateString('fr'),
-        }
-        console.log(testValues)
-        dispatch(registerPersons(testValues))
-        data.push(values)
-        setData([...data])
-    }
-    const handleCancelRowEdits = () => {
-        // setValidationErrors({});
-        console.log('setValidationErrors')
-    }
-    const handleCheckboxChange = (event, rowIndex) => {
-        const updatedData = [...data]
-        updatedData[rowIndex].status = event.target.checked
-        setData(updatedData)
-    }
-
-    const handleLinksChange = (event, rowIndex, index) => {
-        const newLinks = [...data[rowIndex].links]
-        newLinks[index][event.target.name] = event.target.value
-        const updatedLinks = [...data]
-        // // const updatedLink = {
-        // //     ...updatedLinks[rowIndex].links[index],
-        // //     name: event.target.value,
-        // // }
-        // // updatedLinks[rowIndex].links[index] = updatedLink
-        const updatedLink = {
-            ...updatedLinks[rowIndex].links[index],
-            name: event.target.value,
-        }
-        updatedLinks[rowIndex] = {
-            ...updatedLinks[rowIndex],
-            links: [
-                ...updatedLinks[rowIndex].links.slice(0, index),
-                updatedLink,
-                ...updatedLinks[rowIndex].links.slice(index + 1),
-            ],
-        }
-
-        // console.log('event', updatedLinks)
-
-        // console.log('rowIndex', index)
-    }
 
     return (
         <section className="table-wrapper">

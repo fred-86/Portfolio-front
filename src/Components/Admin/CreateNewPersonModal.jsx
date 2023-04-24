@@ -27,6 +27,7 @@ export const CreateNewPersonModal = ({ open, columns, onClose, onSubmit }) => {
             ...values,
             links,
         }
+        console.log('data', data)
         onSubmit(data)
         onClose()
     }
@@ -39,6 +40,18 @@ export const CreateNewPersonModal = ({ open, columns, onClose, onSubmit }) => {
 
     const handleAddLink = () => {
         setLinks([...links, { name: '', link: '' }])
+    }
+    const handleRemoveLink = (indexToRemove) => {
+        setLinks((prevLinks) => {
+            const newLinks = [...prevLinks]
+            newLinks.splice(indexToRemove, 1)
+            return newLinks
+        })
+    }
+    const [previewImage, setPreviewImage] = useState(null)
+
+    const handleRemoveAvatar = () => {
+        setPreviewImage(null)
     }
 
     return (
@@ -53,24 +66,98 @@ export const CreateNewPersonModal = ({ open, columns, onClose, onSubmit }) => {
                             gap: '1.5rem',
                         }}
                     >
-                        {columns.map((column) => (
-                            <TextField
-                                key={column.accessorKey}
-                                label={column.header}
-                                name={column.accessorKey}
-                                onChange={(e) =>
-                                    setValues({
-                                        ...values,
-                                        [e.target.name]: e.target.value,
-                                    })
-                                }
-                            />
-                        ))}
+                        {columns
+                            .filter(
+                                (column) =>
+                                    column.header !== 'Status' &&
+                                    column.header !== 'Liens'
+                            )
+
+                            .map((column) => (
+                                <div key={column.accessorKey}>
+                                    {column.accessorKey === 'avatar' && (
+                                        <>
+                                            {previewImage != null && (
+                                                <div className="field-avatar ">
+                                                    <img
+                                                        className="field-img"
+                                                        src={previewImage}
+                                                        alt="aperçu de l'image"
+                                                    />
+                                                    <span
+                                                        className="field-img-delete"
+                                                        onClick={() =>
+                                                            handleRemoveAvatar()
+                                                        }
+                                                    >
+                                                        supprimer
+                                                    </span>
+                                                </div>
+                                            )}
+
+                                            <div className="field-button">
+                                                <span className="button-label">
+                                                    Avatar{' '}
+                                                </span>
+                                                <Button
+                                                    variant="contained"
+                                                    component="label"
+                                                    sx={{
+                                                        marginBottom: '1rem',
+                                                    }}
+                                                >
+                                                    Upload
+                                                    <input
+                                                        hidden
+                                                        accept="image/*"
+                                                        multiple
+                                                        type="file"
+                                                        key={column.accessorKey}
+                                                        name={
+                                                            column.accessorKey
+                                                        }
+                                                        onChange={(e) => {
+                                                            setValues({
+                                                                ...values,
+                                                                [e.target.name]:
+                                                                    e.target
+                                                                        .files[0],
+                                                            })
+                                                            setPreviewImage(
+                                                                URL.createObjectURL(
+                                                                    e.target
+                                                                        .files[0]
+                                                                )
+                                                            )
+                                                        }}
+                                                    />
+                                                </Button>
+                                            </div>
+                                        </>
+                                    )}
+                                    {column.accessorKey !== 'avatar' && (
+                                        <TextField
+                                            key={column.accessorKey}
+                                            label={column.header}
+                                            name={column.accessorKey}
+                                            onChange={(e) =>
+                                                setValues({
+                                                    ...values,
+                                                    [e.target.name]:
+                                                        e.target.value,
+                                                })
+                                            }
+                                        />
+                                    )}
+                                </div>
+                            ))}
+
                         {links.map((link, index) => (
-                            <div key={index}>
+                            <div key={index} className="link-wrapper">
                                 <TextField
-                                    label="Link Name"
+                                    label="Nom du lien"
                                     value={link.name}
+                                    className="link"
                                     onChange={(e) =>
                                         handleLinkChange(
                                             index,
@@ -80,8 +167,9 @@ export const CreateNewPersonModal = ({ open, columns, onClose, onSubmit }) => {
                                     }
                                 />
                                 <TextField
-                                    label="Link URL"
+                                    label="Url du lien"
                                     value={link.link}
+                                    className="link"
                                     onChange={(e) =>
                                         handleLinkChange(
                                             index,
@@ -90,6 +178,14 @@ export const CreateNewPersonModal = ({ open, columns, onClose, onSubmit }) => {
                                         )
                                     }
                                 />
+                                {index > 0 && (
+                                    <span
+                                        className="delete-link"
+                                        onClick={() => handleRemoveLink(index)}
+                                    >
+                                        supprimer
+                                    </span>
+                                )}
                             </div>
                         ))}
                         <Button onClick={handleAddLink}>Add Link</Button>

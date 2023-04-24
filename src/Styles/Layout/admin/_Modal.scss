@@ -1,0 +1,25 @@
+.field-avatar {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.field-img {
+    height: 100px;
+    width: 100px;
+    object-fit: contain;
+}
+.field-img-delete {
+    cursor: pointer;
+    font-size: 1rem;
+    padding-left: 3px;
+    margin-left: 5px;
+    color: $color-primary;
+}
+
+.field-button {
+    .button-label {
+        font-size: 1rem;
+        color: #666666;
+    }
+}
