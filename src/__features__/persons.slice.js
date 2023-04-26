@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import {
+    deletePersons,
     getPersons,
     registerPersons,
     updatePersons,
@@ -52,8 +53,6 @@ export const personsSlice = createSlice({
                                 link: action.meta.arg.links.link,
                             },
                         ],
-                        createdAT: new Date(),
-                        updatedAt: null,
                     },
                 ]
             })
@@ -92,6 +91,24 @@ export const personsSlice = createSlice({
                 state.loading = false
                 state.error = action.payload
             })
+            .addCase(deletePersons.fulfilled, (state, action) => {
+                const index = state.personsInfo.findIndex(
+                    (person) => person.id === action.payload
+                )
+                if (index !== -1) {
+                    state.personsInfo.splice(index, 1)
+                }
+                state.loading = false
+                state.error = null
+            })
+            .addCase(deletePersons.rejected, (state, action) => {
+                state.loading = false
+                state.error = action.payload
+                // afficher un toast avec l'erreur
+            })
     },
 })
+
+export const { deletePersonsSuccess, deletePersonsFailure } =
+    personsSlice.actions
 export default personsSlice.reducer

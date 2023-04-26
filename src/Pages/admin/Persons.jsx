@@ -27,7 +27,7 @@ export function Persons() {
             {person.loading ? (
                 <Loader />
             ) : (
-                <MaterialTable testdata={person.personsInfo} />
+                <MaterialTable personsData={person.personsInfo} />
             )}
         </main>
     )

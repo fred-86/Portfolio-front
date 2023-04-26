@@ -17,21 +17,25 @@ import {
 } from '@mui/icons-material'
 import { CreateNewPersonModal } from './CreateNewPersonModal'
 import { LinksComponent } from './LinksComponent'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import {
+    deletePersons,
     getPersons,
     registerPersons,
     updatePersons,
 } from '../../__services__/persons.action'
+import { selectPersons } from '../../_helpers__/selectorPersons'
 
-export function MaterialTable({ testdata }) {
+export function MaterialTable({ personsData }) {
     const dispatch = useDispatch()
     // for avatar
-
+    console.log(personsData)
+    const [file, setFile] = useState('')
     const avatarEdit = ({ row }) => {
         const [previewImage, setPreviewImage] = useState(row.original.avatar)
         return (
             <>
+                <p>{previewImage}</p>
                 <img
                     className="field-img"
                     src={previewImage}
@@ -52,15 +56,12 @@ export function MaterialTable({ testdata }) {
                         type="file"
                         // key={column.accessorKey}
                         // name={column.accessorKey}
-                        // onChange={(e) => {
-                        //     setValues({
-                        //         ...values,
-                        //         [e.target.name]: e.target.files[0],
-                        //     })
-                        //     setPreviewImage(
-                        //         URL.createObjectURL(e.target.files[0])
-                        //     )
-                        // }}
+                        onChange={(e) => {
+                            setFile(e.target.files[0])
+                            setPreviewImage(
+                                URL.createObjectURL(e.target.files[0])
+                            )
+                        }}
                     />
                 </Button>
             </>
@@ -104,13 +105,11 @@ export function MaterialTable({ testdata }) {
 
     const [createModalOpen, setCreateModalOpen] = useState(false)
     // copy data for the state
-    const newData = testdata.map((item) => ({
+    const newData = personsData.map((item) => ({
         ...item,
     }))
     const [data, setData] = useState(newData)
     const handleSaveRowEdits = async ({ exitEditingMode, row, values }) => {
-        data[row.index] = values
-
         const dataValue = {
             avatar: values.avatar,
             firstName: values.firstName,
@@ -119,14 +118,30 @@ export function MaterialTable({ testdata }) {
             phone: values.phone,
             links: values.links,
             status: isChecked,
-            updatedAt: new Date(),
         }
-        console.log('update', dataValue)
-        dispatch(updatePersons({ id: row.original.id, dataUpdate: dataValue }))
 
-        setData([...data])
+        await dispatch(
+            updatePersons({
+                id: row.original.id,
+                dataUpdate: dataValue,
+                file: file,
+            })
+        )
+        // dispatch(getPersons())
+        // data[row.index] = dataValue
+        // console.log('edit', data[row.index])
+        // setData([...data])
+        // Get the updated data from the server
+        await dispatch(getPersons())
+        // console.log('response', response)
+        // console.log('type', typeof [...updatedData])
+        // if (Array.isArray(updatedData)) {
+        //     setData([...updatedData])
+        // } else {
+        //     console.error('Error: updatedData is not an array')
+        // }
+
         exitEditingMode()
-        dispatch(getPersons())
 
         // if (!Object.keys(validationErrors).length) {
         //     data[row.index] = values
@@ -136,7 +151,7 @@ export function MaterialTable({ testdata }) {
         // }
     }
 
-    const handleCreateNewRow = (values) => {
+    const handleCreateNewRow = async (values) => {
         const dataValue = {
             avatar: values.avatar,
             firstName: values.firstName,
@@ -145,20 +160,27 @@ export function MaterialTable({ testdata }) {
             phone: values.phone,
             links: values.links,
             status: false,
-            createdAt: new Date(),
-            updatedAt: null,
         }
 
-        dispatch(registerPersons(dataValue))
-        data.push(values)
-        setData([...data])
+        // dispatch(registerPersons(dataValue))
+
+        // data.push(dataValue)
+        // setData([...data])
+        await dispatch(registerPersons(dataValue))
+        await dispatch(getPersons())
+
+        // if (Array.isArray(registerData.personsInfo)) {
+        //     setData(registerData.personsInfo)
+        // } else {
+        //     console.error('Error: updatedData is not an array')
+        // }
     }
     const handleCancelRowEdits = () => {
         // setValidationErrors({});
         console.log('setValidationErrors')
     }
 
-    // For Links
+    // For Links //
     const handleLinksChange = (event, rowIndex, index) => {
         const newLinks = [...data[rowIndex].links]
         newLinks[index][event.target.name] = event.target.value
@@ -180,6 +202,8 @@ export function MaterialTable({ testdata }) {
 
         // console.log('rowIndex', index)
     }
+
+    // table columns //
     const columns = useMemo(
         () => [
             {
@@ -377,11 +401,13 @@ export function MaterialTable({ testdata }) {
                             <IconButton
                                 color="error"
                                 onClick={() => {
-                                    console.log('row', row.index)
+                                    console.log('row', row.original.id)
                                     console.log('data', data)
 
                                     data.splice(row.index, 1) // assuming simple data table
                                     setData([...data])
+
+                                    dispatch(deletePersons(row.original))
                                 }}
                             >
                                 <DeleteIcon />
@@ -410,7 +436,7 @@ export function MaterialTable({ testdata }) {
 }
 
 MaterialTable.propTypes = {
-    testdata: PropTypes.arrayOf(
+    personsData: PropTypes.arrayOf(
         PropTypes.shape({
             avatar: PropTypes.string,
             firstName: PropTypes.string,
