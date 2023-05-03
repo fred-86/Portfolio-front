@@ -12,9 +12,11 @@ export function LinksComponent({ linksValue, onChange }) {
 
     const handleLinkChange = (e, index) => {
         const { name, value } = e.target
+
         const newLinks = [...links]
         newLinks[index] = { ...newLinks[index], [name]: value }
         setLinks(newLinks)
+
         onChange(e, index)
     }
 

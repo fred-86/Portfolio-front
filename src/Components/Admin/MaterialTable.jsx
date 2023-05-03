@@ -29,7 +29,6 @@ import { selectPersons } from '../../_helpers__/selectorPersons'
 export function MaterialTable({ personsData }) {
     const dispatch = useDispatch()
     // for avatar
-    console.log(personsData)
     const [file, setFile] = useState('')
     const avatarEdit = ({ row }) => {
         const [previewImage, setPreviewImage] = useState(row.original.avatar)
@@ -73,6 +72,7 @@ export function MaterialTable({ personsData }) {
         const [checked, setChecked] = useState(false)
         useEffect(() => {
             setChecked(row.original.status)
+            setIsChecked(row.original.status)
         }, [row.original.status])
 
         const handleChange = (event) => {
@@ -116,7 +116,7 @@ export function MaterialTable({ personsData }) {
             lastName: values.lastName,
             email: values.email,
             phone: values.phone,
-            links: values.links,
+            links: modifiedLink,
             status: isChecked,
         }
 
@@ -181,27 +181,84 @@ export function MaterialTable({ personsData }) {
     }
 
     // For Links //
-    const handleLinksChange = (event, rowIndex, index) => {
+
+    const [modifiedLink, setModifiedLink] = useState([{}])
+
+    const handleLinksChange = (event, rowIndex, index, row) => {
+        // copie du tableau
         const newLinks = [...data[rowIndex].links]
+
+        // // obtenir la valeur initiale du champ
+        // const initialValue = newLinks[index][event.target.name]
+        // // vérifier si le champ a été modifié
+        // const value = event.target.value
+        // const isModified = value !== initialValue
+        // console.log(isModified)
+
+        // // mise à jour du champ s'il a été modifié
+        // if (isModified) {
+        //     const updatedLink = Object.assign({}, newLinks[index], {
+        //         [event.target.name]: value,
+        //     })
+        //     newLinks[index] = updatedLink
+        // }
+        const updatedLink = Object.assign({}, newLinks[index], {
+            [event.target.name]: event.target.value,
+        })
+
+        newLinks[index] = updatedLink
+        // mise à jours des liens
         newLinks[index][event.target.name] = event.target.value
+        // copie du tableau entier des datas
         const updatedLinks = [...data]
-        const updatedLink = {
-            ...updatedLinks[rowIndex].links[index],
-            name: event.target.value,
-        }
-        updatedLinks[rowIndex] = {
-            ...updatedLinks[rowIndex],
-            links: [
-                ...updatedLinks[rowIndex].links.slice(0, index),
-                updatedLink,
-                ...updatedLinks[rowIndex].links.slice(index + 1),
-            ],
-        }
+        updatedLinks[rowIndex] = { ...updatedLinks[rowIndex], links: newLinks }
+
+        console.log(
+            'updatedLinks[rowIndex].links',
+            updatedLinks[rowIndex].links
+        )
+        setModifiedLink(updatedLinks[rowIndex].links)
+        // setLink(test)
+
+        // const result = row.original.links.every((obj, index) => {
+        //     return (
+        //         obj.link === updatedLinks[rowIndex].links[index].link &&
+        //         obj.name === updatedLinks[rowIndex].links[index].name
+        //     )
+        // })
+        // if (!result) {
+        //     setTest(updatedLinks[rowIndex].links)
+        // } else {
+        //     setTest(row.original.links)
+        // }
+        // console.log(result)
+
+        // creer un nouvel objet de liens mis à jour avec la nouvelle valeur
+        // console.log(
+        //     'updatedLinks[rowIndex].links[index]',
+        //     updatedLinks[rowIndex].links[index]
+        // )
+        // const updatedLink = {
+        //     ...updatedLinks[rowIndex].links[index],
+        //     name: event.target.value,
+        // }
+
+        // updatedLinks[rowIndex] = {
+        //     ...updatedLinks[rowIndex],
+        //     links: [
+        //         ...updatedLinks[rowIndex].links.slice(0, index),
+        //         updatedLink,
+        //         ...updatedLinks[rowIndex].links.slice(index + 1),
+        //     ],
+        // }
 
         // console.log('event', updatedLinks)
 
         // console.log('rowIndex', index)
     }
+    // useEffect(() => {
+    //     console.log('test', test)
+    // }, [test])
 
     // table columns //
     const columns = useMemo(
@@ -319,7 +376,7 @@ export function MaterialTable({ personsData }) {
                     <LinksComponent
                         linksValue={cell.getValue()}
                         onChange={(event, index) =>
-                            handleLinksChange(event, row.index, index)
+                            handleLinksChange(event, row.index, index, row)
                         }
                     />
                 ),
