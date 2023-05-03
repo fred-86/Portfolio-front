@@ -9,6 +9,7 @@ import {
     Tooltip,
     Checkbox,
     FormControlLabel,
+    TextField,
 } from '@mui/material'
 import {
     Edit as EditIcon,
@@ -103,6 +104,55 @@ export function MaterialTable({ personsData }) {
         )
     }
 
+    // for links
+    const [modifiedLink, setModifiedLink] = useState([{ name: '', link: '' }])
+    const linkEdit = ({ row }) => {
+        const [links, setLinks] = useState(
+            row.original.links.map((link) => ({
+                name: link.name,
+                link: link.link,
+            }))
+        )
+
+        useEffect(() => {
+            setModifiedLink(row.original.links)
+        }, [row.original.links])
+        const handleLinkChange = (e, index) => {
+            const { name, value } = e.target
+
+            const newLinks = [...links]
+            newLinks[index] = { ...newLinks[index], [name]: value }
+            setLinks(newLinks)
+            setModifiedLink(newLinks)
+        }
+        return (
+            <Box>
+                {links.map((link, index) => (
+                    <div className="link-wrapper" key={index}>
+                        <TextField
+                            label="Link Name"
+                            value={link.name}
+                            className="link"
+                            name="name"
+                            onChange={(e) => {
+                                handleLinkChange(e, index)
+                            }}
+                        />
+                        <TextField
+                            label="Link URL"
+                            name="link"
+                            className="link"
+                            value={link.link}
+                            onChange={(e) => {
+                                handleLinkChange(e, index)
+                            }}
+                        />
+                    </div>
+                ))}
+            </Box>
+        )
+    }
+
     const [createModalOpen, setCreateModalOpen] = useState(false)
     // copy data for the state
     const newData = personsData.map((item) => ({
@@ -179,86 +229,6 @@ export function MaterialTable({ personsData }) {
         // setValidationErrors({});
         console.log('setValidationErrors')
     }
-
-    // For Links //
-
-    const [modifiedLink, setModifiedLink] = useState([{}])
-
-    const handleLinksChange = (event, rowIndex, index, row) => {
-        // copie du tableau
-        const newLinks = [...data[rowIndex].links]
-
-        // // obtenir la valeur initiale du champ
-        // const initialValue = newLinks[index][event.target.name]
-        // // vérifier si le champ a été modifié
-        // const value = event.target.value
-        // const isModified = value !== initialValue
-        // console.log(isModified)
-
-        // // mise à jour du champ s'il a été modifié
-        // if (isModified) {
-        //     const updatedLink = Object.assign({}, newLinks[index], {
-        //         [event.target.name]: value,
-        //     })
-        //     newLinks[index] = updatedLink
-        // }
-        const updatedLink = Object.assign({}, newLinks[index], {
-            [event.target.name]: event.target.value,
-        })
-
-        newLinks[index] = updatedLink
-        // mise à jours des liens
-        newLinks[index][event.target.name] = event.target.value
-        // copie du tableau entier des datas
-        const updatedLinks = [...data]
-        updatedLinks[rowIndex] = { ...updatedLinks[rowIndex], links: newLinks }
-
-        console.log(
-            'updatedLinks[rowIndex].links',
-            updatedLinks[rowIndex].links
-        )
-        setModifiedLink(updatedLinks[rowIndex].links)
-        // setLink(test)
-
-        // const result = row.original.links.every((obj, index) => {
-        //     return (
-        //         obj.link === updatedLinks[rowIndex].links[index].link &&
-        //         obj.name === updatedLinks[rowIndex].links[index].name
-        //     )
-        // })
-        // if (!result) {
-        //     setTest(updatedLinks[rowIndex].links)
-        // } else {
-        //     setTest(row.original.links)
-        // }
-        // console.log(result)
-
-        // creer un nouvel objet de liens mis à jour avec la nouvelle valeur
-        // console.log(
-        //     'updatedLinks[rowIndex].links[index]',
-        //     updatedLinks[rowIndex].links[index]
-        // )
-        // const updatedLink = {
-        //     ...updatedLinks[rowIndex].links[index],
-        //     name: event.target.value,
-        // }
-
-        // updatedLinks[rowIndex] = {
-        //     ...updatedLinks[rowIndex],
-        //     links: [
-        //         ...updatedLinks[rowIndex].links.slice(0, index),
-        //         updatedLink,
-        //         ...updatedLinks[rowIndex].links.slice(index + 1),
-        //     ],
-        // }
-
-        // console.log('event', updatedLinks)
-
-        // console.log('rowIndex', index)
-    }
-    // useEffect(() => {
-    //     console.log('test', test)
-    // }, [test])
 
     // table columns //
     const columns = useMemo(
@@ -372,14 +342,8 @@ export function MaterialTable({ personsData }) {
                         })}
                     </Box>
                 ),
-                Edit: ({ cell, row }) => (
-                    <LinksComponent
-                        linksValue={cell.getValue()}
-                        onChange={(event, index) =>
-                            handleLinksChange(event, row.index, index, row)
-                        }
-                    />
-                ),
+
+                Edit: linkEdit,
 
                 muiTableBodyCellEditTextFieldProps: {
                     variant: 'outlined',
